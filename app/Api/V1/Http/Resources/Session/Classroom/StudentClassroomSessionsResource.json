@@ -1,0 +1,25 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": [
+        {
+            "id": 18,
+            "date": "2025-06-05",
+            "start": "13:30:00",
+            "end": "15:51:00",
+            "status": "pending",
+            "content": null,
+            "classroom": {
+                "id": 2,
+                "name": "Lớp IELTS",
+                "status": "not_started",
+                "teacher": {
+                    "id": 1,
+                    "fullname": "Nguyễn Quốc B",
+                    "email": "teacher_test@gmail.com",
+                    "phone": "0999999789"
+                }
+            }
+        }
+    ]
+}

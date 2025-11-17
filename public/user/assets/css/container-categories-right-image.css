@@ -1,0 +1,17 @@
+#product-category-right-image #nav-tab-2 {
+    justify-content: flex-end;
+}
+
+#product-category-right-image #nav-tab-2 > a{
+    line-height: 40px;
+    margin: 0 20px;
+    color: var(--theme-color);
+}
+
+#product-category-right-image #nav-tab-2 .nav-link{
+    color: black;
+}
+
+#product-category-right-image #nav-tab-2 .active{
+    color: var(--theme-color);
+}

@@ -1,0 +1,121 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data":{
+        "id": 5,
+        "name": "Luyện thi Toeic",
+        "type": "one_to_one",
+        "max_students": "1 / 1",
+        "is_full": "Đã đủ học sinh",
+        "status": "in_progress",
+        "start_date": "2025-05-18",
+        "students": [
+            {
+                "id": 2,
+                "fullname": "Hoang Ha"
+            }
+        ],
+        "sessions": [
+            {
+                "id": 51,
+                "date": "2025-05-19",
+                "start": "16:00:00",
+                "end": "17:30:00",
+                "content": null,
+                "status": "pending",
+                "attendance": [
+                    {
+                        "id": 11,
+                        "session_id": 51,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 41,
+                        "session_id": 51,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": "2025-05-19T04:36:45.000000Z",
+                        "updated_at": "2025-05-19T04:36:45.000000Z"
+                    }
+                ]
+            },
+            {
+                "id": 52,
+                "date": "2025-05-21",
+                "start": "17:30:00",
+                "end": "19:00:00",
+                "content": null,
+                "status": "pending",
+                "attendance": [
+                    {
+                        "id": 12,
+                        "session_id": 52,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 42,
+                        "session_id": 52,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": "2025-05-19T04:36:45.000000Z",
+                        "updated_at": "2025-05-19T04:36:45.000000Z"
+                    }
+                ]
+            },
+            {
+                "id": 53,
+                "date": "2025-05-23",
+                "start": "16:00:00",
+                "end": "17:30:00",
+                "content": null,
+                "status": "pending",
+                "attendance": [
+                    {
+                        "id": 13,
+                        "session_id": 53,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 43,
+                        "session_id": 53,
+                        "student_id": 2,
+                        "status": "not_start",
+                        "created_at": "2025-05-19T04:36:45.000000Z",
+                        "updated_at": "2025-05-19T04:36:45.000000Z"
+                    }
+                ]
+            }
+        ],
+        "schedule": [
+            {
+                "id": 9,
+                "weekday": 1,
+                "start": "16:00:00",
+                "end": "17:30:00"
+            },
+            {
+                "id": 10,
+                "weekday": 3,
+                "start": "17:30:00",
+                "end": "19:00:00"
+            },
+            {
+                "id": 11,
+                "weekday": 5,
+                "start": "16:00:00",
+                "end": "17:30:00"
+            }
+        ],
+        "session_qty": 15,
+        "remaining_sessions": 15
+    }
+}

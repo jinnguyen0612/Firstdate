@@ -1,0 +1,48 @@
+#footer a {
+    color: black;
+}
+
+#footer .row>.col-10 {
+    gap: 22px;
+}
+
+#footer .col-11 {
+    padding: 34px 20px;
+    border-bottom: 1px solid rgba(205, 205, 205, 0.609);
+}
+
+#footer .box {
+    padding: 0 20px;
+}
+
+#footer .box ul {
+    padding-left: 0;
+}
+
+#footer .box span {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+#footer .box p {
+    margin: 0;
+}
+
+#footer .box span a {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#footer .box h6 {
+    margin: 20px 0;
+}
+
+#footer .box li {
+    padding: 3px 0;
+}
+
+#footer {
+    width: 100%;
+    margin-top: 5rem;
+    border-top: 3px solid var(--theme-color);
+}

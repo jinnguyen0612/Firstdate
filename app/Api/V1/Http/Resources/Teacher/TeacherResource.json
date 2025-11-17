@@ -1,0 +1,14 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": {
+        "id": 1,
+        "fullname": "Phạm Minh Mạnh",
+        "email": "student@gmail.com",
+        "phone": "0961592551",
+        "address": "D2/084B Ấp Nam Sơn",
+        "avatar": "http://localhost:8080/3081-Mandarin/public/assets/images/anhthumb.jpg",
+        "birthday": "2001-01-01",
+        "gender": 1
+    }
+}

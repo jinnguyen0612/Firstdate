@@ -1,0 +1,13 @@
+
+    {
+        "status": 200,
+        "message": "Thực hiện thành công.",
+        "data": [
+            {
+                "id": 1,
+                "key": "home",
+                "name": "Video Trang chủ",
+                "value": "http://localhost:8080/3131-Firstdate/public/uploads/videos/sample-5s.mp4"
+            }
+        ]
+    }

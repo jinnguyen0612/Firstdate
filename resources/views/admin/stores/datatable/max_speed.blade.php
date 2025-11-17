@@ -1,0 +1,1 @@
+<span>{{ $max_speed }}</span>

@@ -1,0 +1,111 @@
+#container-sale-off .header-box {
+    justify-content: space-between;
+    padding: 17px 24px;
+}
+
+#container-sale-off .header-box a {
+    color: var(--theme-color);
+    text-decoration: none;
+}
+
+
+#container-sale-off .header-box .timer {
+    display: inline-block;
+    /* margin-right: 1em; */
+    text-align: center;
+    height: 2em;
+    width: 20em;
+    color: #fff;
+    background-color: var(--theme-color);
+    font-weight: 700;
+}
+
+#container-sale-off .product-card {
+    flex-direction: column;
+}
+
+#container-sale-off .product-card h5 {
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: normal;
+}
+
+#container-sale-off .product-card h5:hover {
+    color: var(--theme-color);
+}
+
+#container-sale-off .product-card img {
+    height: 186px;
+    width: 186px;
+    object-fit: cover;
+}
+
+#productCarousel-1 .row,
+#productCarousel-2 .row,
+#productCarousel-3 .row,
+#productCarousel-4 .row,
+#productCarousel-5 .row,
+#productCarousel-6 .row,
+#productCarouselSaleOff .row {
+    justify-content: space-evenly;
+}
+
+#productCarousel-1 .carousel-item,
+#productCarousel-2 .carousel-item,
+#productCarousel-3 .carousel-item,
+#productCarousel-4 .carousel-item,
+#productCarousel-5 .carousel-item,
+#productCarousel-6 .carousel-item,
+#productCarouselSaleOff .carousel-item {
+    padding: 20px 0;
+}
+
+#productCarousel-1 .carousel-item .progress,
+#productCarousel-2 .carousel-item .progress,
+#productCarousel-3 .carousel-item .progress,
+#productCarousel-4 .carousel-item .progress,
+#productCarousel-5 .carousel-item .progress,
+#productCarousel-6 .carousel-item .progress,
+#productCarouselSaleOff .carousel-item .progress {
+    border-radius: 1.25rem;
+    position: relative;
+}
+
+#productCarousel-1 .carousel-item .tb-sold,
+#productCarousel-2 .carousel-item .tb-sold,
+#productCarousel-3 .carousel-item .tb-sold,
+#productCarousel-4 .carousel-item .tb-sold,
+#productCarousel-5 .carousel-item .tb-sold,
+#productCarousel-6 .carousel-item .tb-sold,
+#productCarouselSaleOff .carousel-item .tb-sold {
+    position: absolute;
+    right: 40%;
+    color: black;
+    font-weight: 700s;
+}
+
+#productCarousel-1 .carousel-item .progress-bar,
+#productCarousel-2 .carousel-item .progress-bar,
+#productCarousel-3 .carousel-item .progress-bar,
+#productCarousel-4 .carousel-item .progress-bar,
+#productCarousel-5 .carousel-item .progress-bar,
+#productCarousel-6 .carousel-item .progress-bar,
+#productCarouselSaleOff .carousel-item .progress-bar {
+    background-color: var(--theme-color);
+}
+
+
+#productCarousel .product-card:hover {}
+
+.product-hover {
+    height: 0px;
+}
+
+
+.product-carousel-home .row {
+    justify-content: space-evenly;
+}
+
+.product-carousel-home .carousel-item {
+    padding: 20px 0;
+}

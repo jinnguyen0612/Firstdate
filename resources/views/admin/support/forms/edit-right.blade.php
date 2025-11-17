@@ -1,0 +1,24 @@
+@if ($isAdmin)
+    <div class="col-12 col-md-3">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="ti ti-playstation-circle"></i>
+                <span class="ms-2">{{ __('Thao tác') }}</span>
+            </div>
+            <div class="card-body d-flex justify-content-between p-2">
+                <x-button.submit :title="__('Cập nhật')" />
+                <x-button.modal-delete data-route="{{ route('admin.support.delete', $category->id) }}"
+                    :title="__('Xóa')" />
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="ti ti-photo"></i>
+                <span class="ms-2">Hình ảnh</span>
+            </div>
+            <div class="card-body p-2">
+                <x-input-image-ckfinder name="image" showImage="featureImage" :value="$category->image" />
+            </div>
+        </div>
+    </div>
+@endif

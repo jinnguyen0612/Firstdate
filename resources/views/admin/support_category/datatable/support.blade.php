@@ -1,0 +1,1 @@
+<x-link :href="route('admin.support.index', $id)" :title="__('DS Câu hỏi Hỗ trợ')" /><br>

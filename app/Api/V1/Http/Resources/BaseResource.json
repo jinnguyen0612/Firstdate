@@ -1,0 +1,26 @@
+[
+    {
+        "status": 200,
+        "message": "Thực hiện thành công."
+    },
+    {
+        "status": 404,
+        "message": "Không tìm thấy."
+    },
+    {
+        "status": 401,
+        "message": "Tài khoản hoặc mật khẩu không chính xác."
+    },
+    {
+        "status": 403,
+        "message": "Bạn không có quyền truy cập vào tài nguyên này."
+    },
+    {
+        "status": 500,
+        "message": "Đã xảy ra lỗi không mong muốn."
+    },
+    {
+        "status": 400,
+        "message": "Thực hiện không thành công."
+    }
+]

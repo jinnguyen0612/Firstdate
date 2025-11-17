@@ -1,0 +1,132 @@
+/* Container styles */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.bottom-nav-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Item styles */
+.nav-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Icon styles */
+.nav-bottom-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Text styles */
+.nav-bottom-item span {
+    margin-top: 4px;
+}
+
+/* Active item styles */
+.nav-bottom-item.active {
+    color: var(--theme-color);
+    background: rgba(255, 68, 68, 0.1);
+    transform: translateY(-8px);
+    animation: bounce 0.5s ease;
+}
+
+/* Icon animation for active item */
+.nav-bottom-item.active i {
+    animation: wiggle 1s ease infinite;
+    transform-origin: center;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Wiggle animation for icons */
+@keyframes wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Hover effects */
+.nav-bottom-item:hover {
+    color: var(--theme-color);
+}
+
+.nav-bottom-item:hover i {
+    transform: scale(1.1);
+}
+
+/* Optional: Add shadow for more depth on active item */
+.nav-bottom-item.active {
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Badge styles for cart */
+.nav-bottom-item i.fas.fa-shopping-cart {
+    position: relative;
+}
+
+.nav-bottom-item i.fas.fa-shopping-cart::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--theme-color);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    display: none;
+}
+
+.nav-bottom-item i.fas.fa-shopping-cart[data-count]:not([data-count=""]):not([data-count="0"])::after {
+    display: block;
+}

@@ -1,0 +1,1 @@
+<x-link :href="route('admin.partner.table.index', $id)" title="Danh sách bàn"/>

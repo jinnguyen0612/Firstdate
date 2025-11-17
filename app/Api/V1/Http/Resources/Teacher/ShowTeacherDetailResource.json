@@ -1,0 +1,74 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": {
+        "id": 1,
+        "fullname": "Giao Vien 01",
+        "avatar": "http://localhost:8080/3081-Mandarin/public/assets/images/anhthumb.jpg",
+        "classrooms": [
+            {
+                "id": 5,
+                "name": "Luyện thi Toeic",
+                "max_students": "1 - 1",
+                "schedule": [
+                    {
+                        "id": 9,
+                        "weekday": 1,
+                        "start": "16:00:00",
+                        "end": "17:30:00"
+                    },
+                    {
+                        "id": 10,
+                        "weekday": 3,
+                        "start": "17:30:00",
+                        "end": "19:00:00"
+                    },
+                    {
+                        "id": 11,
+                        "weekday": 5,
+                        "start": "16:00:00",
+                        "end": "17:30:00"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Lớp tester cơ bản",
+                "max_students": "0 - 5",
+                "schedule": [
+                    {
+                        "id": 12,
+                        "weekday": 2,
+                        "start": "17:30:00",
+                        "end": "19:00:00"
+                    },
+                    {
+                        "id": 13,
+                        "weekday": 4,
+                        "start": "17:30:00",
+                        "end": "19:00:00"
+                    }
+                ]
+            },
+            {
+                "id": 9,
+                "name": "Lớp lập trình web Laravel cơ bản",
+                "max_students": "1 - 5",
+                "schedule": [
+                    {
+                        "id": 18,
+                        "weekday": 1,
+                        "start": "17:30:00",
+                        "end": "19:00:00"
+                    },
+                    {
+                        "id": 19,
+                        "weekday": 3,
+                        "start": "17:30:00",
+                        "end": "19:00:00"
+                    }
+                ]
+            }
+        ]
+    }
+}

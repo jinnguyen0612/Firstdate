@@ -1,0 +1,1 @@
+<span>{{ format_date($created_at) }}</span>

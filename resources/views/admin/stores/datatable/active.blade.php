@@ -1,0 +1,1 @@
+<span class="{{ $active ? 'text-success' : 'text-danger' }}">{{ $active ? 'Hoạt động' : 'Không hoạt động' }}</span>

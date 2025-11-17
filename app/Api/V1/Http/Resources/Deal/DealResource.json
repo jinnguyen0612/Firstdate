@@ -1,0 +1,40 @@
+
+    {
+        "status": 200,
+        "message": "Thực hiện thành công.",
+        "data": {
+            "id": 3,
+            "userMale": {
+                "id": 2,
+                "avatar": "http://localhost:8080/3131-Firstdate/public/uploads/user//FH2FgIuYp2mnhhwqwF7BrwhwETXy3R7bIdmnvqXc.jpg",
+                "thumbnails": [
+                    "http://localhost:8080/3131-Firstdate/public/uploads/user//F5Q8bWQlgqWZLMaVDNmadL0397D07QIXiHP4zDny.jpg"
+                ],
+                "fullname": "Ly Long Duc",
+                "age": 22,
+                "province_id": 50,
+                "province": "Thành phố Hồ Chí Minh",
+                "district_id": 538,
+                "district": "Quận Gò Vấp",
+                "zodiac_sign": "Libra"
+            },
+            "userFemale": {
+                "id": 1,
+                "avatar": "http://localhost:8080/3131-Firstdate/public/uploads/user//ZM6vPUuZ6gRTlQjF7THZtQtQy0jPfbVPXbRwkVpx.jpg",
+                "thumbnails": [
+                    "http://localhost:8080/3131-Firstdate/public/uploads/user//tSZ10Q0hahuErTES3AkXAZphp6h7FzN7KEhWmk9W.jpg"
+                ],
+                "fullname": "Dang Hoang Ha",
+                "age": 23,
+                "province_id": 50,
+                "province": "Thành phố Hồ Chí Minh",
+                "district_id": 538,
+                "district": "Quận Gò Vấp",
+                "zodiac_sign": "Sagittarius"
+            },
+            "dealDistrictOptions": [],
+            "dealDateOptions": [],
+            "dealPartnerOptions": [],
+            "status": "cancelled"
+        }
+    }

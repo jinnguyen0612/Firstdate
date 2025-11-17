@@ -1,0 +1,11 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": [
+        {
+            "id": 1,
+            "fullname": "Giao Vien 01",
+            "avatar": "http://localhost:8080/3081-Mandarin/public/assets/images/anhthumb.jpg"
+        }
+    ]
+}

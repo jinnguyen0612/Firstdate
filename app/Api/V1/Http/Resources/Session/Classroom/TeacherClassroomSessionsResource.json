@@ -1,0 +1,35 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": {
+        "id": 5,
+        "date": "2025-06-16",
+        "start": "19:34:00",
+        "end": "21:34:00",
+        "status": "pending",
+        "content": null,
+        "student_qty": 1,
+        "attendance": [
+            {
+                "id": 1,
+                "fullname": "Phạm Thị A",
+                "status": "present"
+            }
+        ],
+        "classroom": {
+            "id": 1,
+            "name": "Lớp Giao tiếp",
+            "status": "not_started",
+            "schedules": [
+                {
+                    "value": 0,
+                    "name": "Chủ nhật"
+                },
+                {
+                    "value": 4,
+                    "name": "Thứ năm"
+                }
+            ]
+        }
+    }
+}

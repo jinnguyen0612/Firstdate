@@ -1,0 +1,31 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": [
+        {
+            "setting_key": "policy",
+            "setting_name": "Điều khoản - chính sách",
+            "plain_value": ""
+        },
+        {
+            "setting_key": "information",
+            "setting_name": "Thông tin giới thiệu",
+            "plain_value": ""
+        },
+        {
+            "setting_key": "zalo",
+            "setting_name": "Zalo:",
+            "plain_value": "0707070444"
+        },
+        {
+            "setting_key": "hotline",
+            "setting_name": "Số điện thoại:",
+            "plain_value": "0707070444"
+        },
+        {
+            "setting_key": "address",
+            "setting_name": "Địa chỉ",
+            "plain_value": ""
+        }
+    ]
+}

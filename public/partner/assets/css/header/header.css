@@ -1,0 +1,199 @@
+button:focus-visible,
+.navbar-brand:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.navbar-nav {
+    align-items: center;
+    justify-content: center;
+}
+
+.collapse .navbar-nav .nav-link {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.collapse .navbar-nav .nav-link:hover {
+    color: #F53E3E;
+}
+
+.collapse .navbar-nav .nav-link.active {
+    color: #F53E3E;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.account-avatar {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    content: '';
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.account-name {
+    color: black;
+    font-size: 1rem;
+    font-weight: 500;
+    display: inline-block;
+    text-wrap: initial;
+}
+
+.navbar-brand:hover>.account-name {
+    color: #F53E3E;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.offcanvas .navbar-brand {
+    justify-content: start;
+}
+
+/* Đặt width cố định ngay từ đầu */
+.offcanvas {
+    width: 250px !important;
+    max-width: none;
+    /* giữ nguyên từ lúc ẩn tới lúc hiện */
+    padding: 2vh 2vw;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    /* chỉ animate transform */
+}
+
+.offcanvas .navbar-nav .nav-item {
+    width: 100%;
+}
+
+.nav-tabs .nav-link {
+    border-radius: 10px;
+}
+
+.offcanvas .navbar-nav .nav-item .nav-link {
+    color: black;
+    text-align: start;
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.offcanvas .navbar-nav .nav-item .nav-link.active {
+    color: white;
+    background-color: #F53E3E;
+}
+
+.fade {
+    transition: opacity .6s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade {
+        transition: none;
+    }
+}
+
+.dropdown-menu.notification-list {
+    width: 300px;
+    padding: 0;
+}
+
+.notification-container.dropdown .notification-button {
+    position: relative;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.notification-container.dropdown .notification-button .notification-badge {
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    border-radius: 40%;
+    background-color: #F53E3E;
+    color: white;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.navbar-toggler {
+    border: none;
+    padding: 0;
+}
+
+button.navbar-toggler:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.notification-header {
+    background: #EEF5F7;
+    text-align: center;
+    color: #000;
+    padding: 10px 0;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.notification-footer {
+    background: #EEF5F7;
+    text-align: center;
+    color: #F53E3E;
+    padding: 10px 0;
+    border-top: 1px solid #d1d1d1;
+}
+
+.dropdown-menu.show {
+    overflow-y: none;
+}
+
+.notification-body {
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.ntfctn-hdng .badge {
+    background: #5E6E7D;
+    color: #FFF;
+}
+
+@media (max-width: 324px) {
+    .sm-display-custom {
+        display: none;
+    }
+}
+
+@media (max-width: 425px) {
+    nav.navbar {
+        padding: 10px 0;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 768px) {
+    nav.navbar {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+    nav.navbar {
+        padding: 10px 5%;
+    }
+}
+
+@media (max-width: 992px) {
+    a.nav-link.active {
+        background-color: #F53E3E;
+        border-radius: 10px;
+    }
+}

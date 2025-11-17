@@ -1,0 +1,1 @@
+<span>{{ $created_at }}</span>

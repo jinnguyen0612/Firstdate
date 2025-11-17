@@ -1,0 +1,1 @@
+<x-link :href="route('admin.support.edit', ['support_category_id' => $support_category_id, 'id' => $id])" :title="$title" /><br>

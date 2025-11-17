@@ -1,0 +1,21 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": {
+        "id": 4,
+        "fullname": "Tran Nhat Quan",
+        "email": "aichisendou0612@gmail.com",
+        "phone": "0937461563",
+        "district_id": "538",
+        "district": "Quận Gò Vấp",
+        "avatar": "http://localhost:8080/3131-Firstdate/public/uploads/user//4Lc9CShVXvvhtRnf5Tw6xMfzRbRvzNNYkeSDD1UF.jpg",
+        "thumbnails": [
+            "http://localhost:8080/3131-Firstdate/public/uploads/user//0zUx05O2LPth8l7KUpIivvHS5O1E3JQWYUuJuevE.jpg",
+            "http://localhost:8080/3131-Firstdate/public/uploads/user//YV2GjMrrlckrn3AFhh1jAsbLuivEscVY2GBk3QLF.jpg"
+        ],
+        "birthday": "2000-09-14T17:00:00.000000Z",
+        "age": 24,
+        "zodiac_sign": "virgo",
+        "gender": 1
+    }
+}

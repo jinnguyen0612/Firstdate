@@ -1,0 +1,19 @@
+#product-category #nav-tab {
+    justify-content: flex-end;
+}
+
+#product-category #nav-tab >a{
+    line-height: 40px;
+    margin: 0 20px;
+    color: var(--theme-color);
+}
+
+#product-category #nav-tab .nav-link{
+    color: black;
+}
+
+#product-category #nav-tab .active{
+    color: var(--theme-color);
+}
+
+

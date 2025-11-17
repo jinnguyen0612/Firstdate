@@ -1,0 +1,56 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data":[
+        {
+            "id": 9,
+            "name": "Lớp lập trình web Laravel cơ bản",
+            "type": "group",
+            "max_students": "1 - 5",
+            "is_full": 0,
+            "status": "not_started",
+            "start_date": "2025-05-25 00:00:00",
+            "schedule": [
+                {
+                    "id": 18,
+                    "weekday": 1,
+                    "start": "17:30:00",
+                    "end": "19:00:00"
+                },
+                {
+                    "id": 19,
+                    "weekday": 3,
+                    "start": "17:30:00",
+                    "end": "19:00:00"
+                }
+            ],
+            "session_qty": 5,
+            "remaining_sessions": 5
+        },
+        {
+            "id": 6,
+            "name": "Lớp tester cơ bản",
+            "type": "group",
+            "max_students": "0 - 5",
+            "is_full": 0,
+            "status": "not_started",
+            "start_date": "2025-05-18 00:00:00",
+            "schedule": [
+                {
+                    "id": 12,
+                    "weekday": 2,
+                    "start": "17:30:00",
+                    "end": "19:00:00"
+                },
+                {
+                    "id": 13,
+                    "weekday": 4,
+                    "start": "17:30:00",
+                    "end": "19:00:00"
+                }
+            ],
+            "session_qty": 5,
+            "remaining_sessions": 5
+        }
+    ]
+}

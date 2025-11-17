@@ -1,0 +1,1 @@
+<span>{{ $max_sound_intensity }}</span>

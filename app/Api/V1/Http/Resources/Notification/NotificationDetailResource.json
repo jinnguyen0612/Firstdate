@@ -1,0 +1,13 @@
+{
+    "status": 200,
+    "message": "Thực hiện thành công.",
+    "data": {
+        "id": 12,
+        "title": "Nghỉ lễ I",
+        "short_message": "Nghỉ lễ I",
+        "message": "<p>Nghỉ lễ I</p>",
+        "image": "/public/assets/images/anhthumb.jpg",
+        "status": "Đã đọc",
+        "created_at": "2025-05-15T06:34:37.000000Z"
+    }
+}
