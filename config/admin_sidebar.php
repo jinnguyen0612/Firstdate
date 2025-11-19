@@ -114,6 +114,29 @@ return [
         ]
     ],
     [
+        'title' => 'Gói',
+        'routeName' => null,
+        'icon' => '<i class="ti ti-packages"></i>',
+        'roles' => [],
+        'permissions' => ['createPackage', 'viewPackage', 'updatePackage', 'deletePackage'],
+        'sub' => [
+            [
+                'title' => 'Thêm Gói',
+                'routeName' => 'admin.package.create',
+                'icon' => '<i class="ti ti-plus"></i>',
+                'roles' => [],
+                'permissions' => ['createPackage'],
+            ],
+            [
+                'title' => 'DS Gói',
+                'routeName' => 'admin.package.index',
+                'icon' => '<i class="ti ti-list"></i>',
+                'roles' => [],
+                'permissions' => ['viewPackage'],
+            ],
+        ]
+    ],
+    [
         'title' => 'Bảng giá',
         'routeName' => null,
         'icon' => '<i class="ti ti-receipt-2"></i>',

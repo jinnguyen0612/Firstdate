@@ -15,6 +15,22 @@ Route::controller(App\Api\V1\Http\Controllers\Notification\NotificationControlle
         Route::delete('/delete-all', 'deleteAll')->name('deleteAll');
     });
 
+//Price List
+Route::controller(App\Api\V1\Http\Controllers\PriceList\PriceListController::class)
+    ->prefix('/price-lists')
+    ->as('price_list.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
+//Package
+Route::controller(App\Api\V1\Http\Controllers\Package\PackageController::class)
+    ->prefix('/packages')
+    ->as('package.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
 //App Title
 Route::controller(App\Api\V1\Http\Controllers\AppTitle\AppTitleController::class)
     ->prefix('/app-titles')
@@ -114,6 +130,7 @@ Route::controller(App\Api\V1\Http\Controllers\User\UserController::class)
             Route::post('/update-pin', 'updatePin')->name('updatePin');
             Route::post('/verify-pin', 'verifyPin')->name('verifyPin');
             Route::get('/near-by', 'getUserNearBy')->name('getUserNearBy');
+            Route::post('/register-package', 'registerPackage')->name('registerPackage');
         });
         Route::post('/send-otp', 'sendOTP')->name('sendOTP');
         Route::post('/send-otp-register', 'sendOTPRegister')->name('sendOTPRegister');
@@ -181,6 +198,13 @@ Route::controller(App\Api\V1\Http\Controllers\Booking\BookingController::class)
     ->middleware('auth:user')
     ->group(function () {
         Route::get('/pay-deposit/{id}', 'payDeposit')->name('payDeposit');
+    });
+
+Route::controller(App\Api\V1\Http\Controllers\Partner\PartnerController::class)
+    ->prefix('/partners')
+    ->as('partner.')
+    ->group(function () {
+        Route::get('/', 'index')->name('get');
     });
 
 Route::controller(App\Api\V1\Http\Controllers\SupportCategory\SupportCategoryController::class)

@@ -15,12 +15,14 @@ use Illuminate\Http\Request;
 use App\Admin\Traits\Setup;
 use App\Api\V1\Http\Resources\Transaction\TransactionMessage;
 use App\Api\V1\Repositories\Answer\AnswerRepositoryInterface;
+use App\Api\V1\Repositories\Package\PackageRepositoryInterface;
 use App\Api\V1\Services\PayOS\PayOSService;
 use App\Enums\Transaction\TransactionStatus;
 use App\Enums\Transaction\TransactionType;
 use App\Enums\User\UserStatus;
 use App\Enums\User\ZodiacSign;
 use App\Models\User;
+use App\Models\UserPackage;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +49,7 @@ class AuthService implements AuthServiceInterface
         protected PriceListRepositoryInterface $priceListRepository,
         protected DistrictRepositoryInterface $districtRepository,
         protected PayOSService $payOSService,
+        protected PackageRepositoryInterface $packageRepository,
     ) {
         $this->repository = $repository;
         $this->fileService = $fileService;
@@ -368,5 +371,67 @@ class AuthService implements AuthServiceInterface
         }
 
         return null;
+    }
+
+    public function registerPackage(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            //code...
+            $this->data = $request->validated();
+            $currentUserId = $this->getCurrentUserId();
+            $package = $this->packageRepository->findOrFail($this->data['package_id']);
+            $user = $this->repository->findOrFail($currentUserId);
+            if($user->wallet < $package->price){
+                return [
+                    'success' => false,
+                    'status' => 400,
+                    'message' => 'Đăng ký gói không thành công. Vui lòng nạp thêm tim để thực hiện giao dịch.',
+                ];
+            }
+            UserPackage::create([
+                'user_id' => $currentUserId,
+                'package_id' => $package->id,
+                'expired_at' => now()->addDays($package->available_days),
+            ]);
+
+            $price = $package->discount_price ?? $package->price;
+
+            $message = [
+                'value' => $price,
+                'service' => $package->name,
+            ];
+
+            $this->transactionRepository->createTransaction(
+                $user,
+                null,
+                $price,
+                TransactionType::Payment->value,
+                TransactionStatus::Success->value,
+                null,
+                TransactionMessage::message(TransactionType::Payment->value, $message)
+            );
+
+            $user->increment('wallet', $price);
+
+            DB::commit();
+            return [
+                'success' => true,
+                'status' => 200,
+                'message' => __('Đăng ký gói thành công.'),
+            ];
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            Log::error($th->getMessage());
+            return [
+                'success' => false,
+                'status' => 400,
+                'message' => __('Đăng ký gói thất bại.'),
+            ];
+        }
+
+
     }
 }

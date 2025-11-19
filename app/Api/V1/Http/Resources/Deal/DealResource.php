@@ -20,6 +20,7 @@ class DealResource extends JsonResource
                     return [
                         'id' => $item->id,
                         'district_id' => $item->district_id,
+                        'district_name' => $item->district ? $item->district->name : null,
                         'is_chosen' => $item->is_chosen
                     ];
                 })
@@ -40,6 +41,7 @@ class DealResource extends JsonResource
                     return [
                         'id' => $item->id,
                         'partner_id' => $item->partner_id,
+                        'partner_name' => $item->partner ? $item->partner->name : null,
                         'is_chosen' => $item->is_chosen
                     ];
                 })

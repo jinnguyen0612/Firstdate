@@ -1,0 +1,1 @@
+<x-link :href="route('admin.package.edit', $id)" class="text-primary">{{ $name }}</x-link>

@@ -27,6 +27,7 @@ class ShowAllUserResource extends JsonResource
             'district' => $this->district->name ?? null,
             'zodiac_sign' => $this->zodiac_sign->name ?? null,
             'gender' => $this->gender,
+            'is_premium' => $this->is_premium(),
         ];
     }
 }

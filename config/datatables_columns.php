@@ -380,6 +380,46 @@ return [
             'addClass' => 'text-center align-middle',
         ],
     ],
+    'package' => [
+        'name' => [
+            'title' => 'Tên gói',
+            'icon' => 'ti-package',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'price' => [
+            'title' => 'Giá tiền (tim)',
+            'icon' => 'ti-coin',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'discount_price' => [
+            'title' => 'Giá tiền sau giảm giá (tim)',
+            'icon' => 'ti-coin',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'available_days' => [
+            'title' => 'Số ngày khả dụng',
+            'icon' => 'ti-calendar',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'is_active' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-alert-circle',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
     'price_list' => [
         'price' => [
             'title' => 'Giá tiền',

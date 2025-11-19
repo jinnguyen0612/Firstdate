@@ -13,6 +13,7 @@ use App\Api\V1\Http\Requests\User\GetUserNearByRequest;
 use App\Api\V1\Http\Requests\User\LoginRequest;
 use App\Api\V1\Http\Requests\User\PinRequest;
 use App\Api\V1\Http\Requests\User\RefreshTokenRequest;
+use App\Api\V1\Http\Requests\User\RegisterPackageRequest;
 use App\Api\V1\Http\Requests\User\RegisterRequest;
 use App\Api\V1\Http\Requests\User\ResendOTPRequest;
 use App\Api\V1\Http\Requests\User\SendOTPRegisterRequest;
@@ -548,6 +549,21 @@ class UserController extends Controller
                 'status' => 400,
                 'message' => __('notifyFail'),
             ], 400);
+        }
+    }
+
+    public function registerPackage(RegisterPackageRequest $request) {
+        $response = $this->service->registerPackage($request);
+        if ($response['success'] == true) {
+            return response()->json([
+                'status' => 200,
+                'message' => $response['message'],
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => $response['status'],
+                'message' => $response['message'],
+            ], $response['status']);
         }
     }
 }

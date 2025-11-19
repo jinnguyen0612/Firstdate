@@ -177,4 +177,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(UserRelationship::class, 'user_id');
     }
+
+    public function user_packages()
+    {
+        return $this->hasMany(UserPackage::class, 'user_id');
+    }
+
+    public function is_premium()
+    {
+        return $this->user_packages()->where('expired_at', '>', now())->exists();
+    }
 }

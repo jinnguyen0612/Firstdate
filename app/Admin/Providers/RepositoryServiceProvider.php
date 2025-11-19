@@ -37,6 +37,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Admin\Repositories\PartnerTable\PartnerTableRepositoryInterface' => 'App\Admin\Repositories\PartnerTable\PartnerTableRepository',
         'App\Admin\Repositories\SupportCategory\SupportCategoryRepositoryInterface' => 'App\Admin\Repositories\SupportCategory\SupportCategoryRepository',
         'App\Admin\Repositories\Support\SupportRepositoryInterface' => 'App\Admin\Repositories\Support\SupportRepository',
+        'App\Admin\Repositories\Package\PackageRepositoryInterface' => 'App\Admin\Repositories\Package\PackageRepository',
     ];
     /**
      * Register services.

@@ -34,6 +34,7 @@ class UserResource extends JsonResource
             'relationship' => $this->userRelationship,
             'datingTime' => $this->userDatingTimes,
             'status' => $this->status,
+            'is_premium' => $this->is_premium(),
         ];
     }
 }

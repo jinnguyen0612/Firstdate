@@ -94,6 +94,28 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         });
     });
 
+    //Package
+    Route::prefix('/packages')->as('package.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\Package\PackageController::class)->group(function () {
+            Route::group(['middleware' => ['permission:createPackage', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewPackage', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
+
+            Route::group(['middleware' => ['permission:updatePackage', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
+
+            Route::group(['middleware' => ['permission:deletePackage', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
+
     //Price List
     Route::prefix('/price-list')->as('price_list.')->group(function () {
         Route::controller(App\Admin\Http\Controllers\PriceList\PriceListController::class)->group(function () {

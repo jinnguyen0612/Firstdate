@@ -29,6 +29,7 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Admin\Services\PartnerTable\PartnerTableServiceInterface' => 'App\Admin\Services\PartnerTable\PartnerTableService',
         'App\Admin\Services\SupportCategory\SupportCategoryServiceInterface' => 'App\Admin\Services\SupportCategory\SupportCategoryService',
         'App\Admin\Services\Support\SupportServiceInterface' => 'App\Admin\Services\Support\SupportService',
+        'App\Admin\Services\Package\PackageServiceInterface' => 'App\Admin\Services\Package\PackageService',
     ];
     /**
      * Register services.
