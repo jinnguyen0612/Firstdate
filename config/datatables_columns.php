@@ -442,6 +442,34 @@ return [
             'addClass' => 'text-center align-middle',
         ],
     ],
+    'app_title_video' => [
+        'key' => [
+            'title' => 'Từ khóa',
+            'icon' => 'ti-key',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'name' => [
+            'title' => 'Tên',
+            'icon' => 'ti-tags',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'value' => [
+            'title' => 'Video',
+            'icon' => 'ti-video',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
     'support_category' => [
         'title' => [
             'title' => 'Tiêu đề',

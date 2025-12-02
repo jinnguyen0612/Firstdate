@@ -3,6 +3,7 @@
 namespace App\Admin\Repositories\Transaction;
 use App\Admin\Repositories\EloquentRepositoryInterface;
 use App\Models\Partner;
+use App\Models\User;
 
 interface TransactionRepositoryInterface extends EloquentRepositoryInterface
 {
@@ -13,4 +14,5 @@ interface TransactionRepositoryInterface extends EloquentRepositoryInterface
     public function createTransaction($model_from = null, $model_to = null, $amount = 0, $type, $status, $image = null, $description = null);
     public function getUserProfit();
     public function getPartnerProfit();
+    public function paginateTransactionByUser($user, $limit = 10);
 }

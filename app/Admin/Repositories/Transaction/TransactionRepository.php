@@ -8,8 +8,7 @@ use App\Admin\Traits\Setup;
 use App\Enums\Transaction\TransactionType;
 use App\Models\Partner;
 use App\Models\Transaction;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class TransactionRepository extends EloquentRepository implements TransactionRepositoryInterface
@@ -119,5 +118,49 @@ class TransactionRepository extends EloquentRepository implements TransactionRep
         $cost = (float) ($this->model->where('to_type', \App\Models\Partner::class)->where('type', TransactionType::Withdraw->value)->sum('amount') ?? 0) * 1000;
 
         return $revenue - $cost;
+    }
+
+    public function paginateTransactionByUser($userId, $limit = 10, $type = null)
+    {
+        $query = $this->getQueryBuilder()
+            ->where(function ($q) use ($userId) {
+                $q->where(function ($q) use ($userId) {
+                    $q->where('from_id', $userId)
+                        ->where('from_type', User::class)
+                        ->whereIn('type', [
+                            TransactionType::Deposit->value,
+                            TransactionType::Payment->value,
+                            TransactionType::Withdraw->value
+                        ]);
+                })
+                    ->orWhere(function ($q) use ($userId) {
+                        $q->where('to_id', $userId)
+                            ->where('to_type', User::class)
+                            ->whereIn('type', [
+                                TransactionType::Withdraw->value,
+                                TransactionType::Refund->value,
+                                TransactionType::Receive->value
+                            ]);
+                    });
+            });
+
+        if ($type) {
+            if($type == 'received') {
+                $query->where(function ($q) {
+                    $q->where('type', TransactionType::Receive->value)
+                        ->orWhere('type', TransactionType::Refund->value)
+                        ->orWhere('type', TransactionType::Deposit->value);
+                });
+            }
+            if($type == 'payment'){
+                $query->where('type', TransactionType::Payment->value);
+            }
+            if($type == 'withdraw'){
+                $query->where('type', TransactionType::Withdraw->value);
+            }
+        }
+
+        return $query->orderByDesc('created_at')
+            ->simplePaginate($limit);
     }
 }

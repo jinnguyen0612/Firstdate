@@ -6,6 +6,7 @@ use App\Admin\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Api\V1\Http\Requests\Partner\PartnerRequest;
 use App\Api\V1\Http\Resources\Partner\AllPartnerResource;
+use App\Api\V1\Http\Resources\Partner\PartnerResource;
 use App\Api\V1\Repositories\Partner\PartnerRepositoryInterface;
 use App\Api\V1\Services\Partner\PartnerServiceInterface;
 use App\Api\V1\Services\Partner\PartnerService;
@@ -69,6 +70,26 @@ class PartnerController extends Controller
                 'status' => 200,
                 'message' => __('Thực hiện thành công.'),
                 'data' => $partners
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ nếu cần thiết
+            Log::error('Error listing Question: ' . $e->getMessage());
+            return response()->json([
+                'status' => 400,
+                'message' => __('Thực hiện thất bại.')
+            ], 400);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $partner = $this->repository->findOrFail($id);
+            $partner = new PartnerResource($partner);
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.'),
+                'data' => $partner
             ]);
         } catch (\Exception $e) {
             // Xử lý ngoại lệ nếu cần thiết

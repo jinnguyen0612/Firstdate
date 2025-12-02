@@ -7,35 +7,32 @@ use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Admin\Services\File\FileService;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
-use App\Api\V1\Http\Requests\User\CreatePinRequest;
 use App\Api\V1\Http\Requests\User\DraftUpdateRequest;
 use App\Api\V1\Http\Requests\User\GetUserNearByRequest;
 use App\Api\V1\Http\Requests\User\LoginRequest;
+use App\Api\V1\Http\Requests\User\PackageHistoryRequest;
 use App\Api\V1\Http\Requests\User\PinRequest;
 use App\Api\V1\Http\Requests\User\RefreshTokenRequest;
 use App\Api\V1\Http\Requests\User\RegisterPackageRequest;
 use App\Api\V1\Http\Requests\User\RegisterRequest;
-use App\Api\V1\Http\Requests\User\ResendOTPRequest;
 use App\Api\V1\Http\Requests\User\SendOTPRegisterRequest;
 use App\Api\V1\Http\Requests\User\SendOTPRequest;
-use App\Api\V1\Http\Requests\User\TopUpWalletRequest;
 use App\Api\V1\Http\Requests\User\UpdateBankRequest;
-use App\Api\V1\Http\Requests\User\UpdatePasswordRequest;
-use App\Api\V1\Http\Requests\User\UpdatePinRequest;
 use App\Api\V1\Http\Requests\User\UpdateRequest;
 use App\Api\V1\Http\Requests\User\VerifyOTPRequest;
-use App\Api\V1\Http\Requests\User\WithdrawRequest;
+use App\Api\V1\Http\Resources\User\BankResource;
+use App\Api\V1\Http\Resources\User\PackageHistoryResource;
 use App\Api\V1\Http\Resources\User\ProfileResource;
 use App\Api\V1\Http\Resources\User\ShowAllUserResource;
 use App\Api\V1\Http\Resources\User\UserResource;
 use App\Api\V1\Services\Auth\AuthServiceInterface;
 use Illuminate\Support\Facades\Auth;
-use App\Api\V1\Repositories\Answer\AnswerRepositoryInterface;
 use App\Api\V1\Repositories\Otp\OtpRepositoryInterface;
 use App\Api\V1\Repositories\User\UserRepositoryInterface;
 use App\Api\V1\Repositories\UserAnswer\UserAnswerRepositoryInterface;
 use App\Api\V1\Support\Response;
 use App\Mail\Authentication;
+use App\Models\UserPackage;
 use App\Traits\JwtService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -89,7 +86,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 200,
             'message' => __('Thực hiện thành công.'),
-            'data' => $id? new UserResource($user): new ProfileResource($user),
+            'data' => new ProfileResource($user),
         ]);
     }
 
@@ -543,6 +540,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => __('Thêm thông tin ngân hàng thành công.'),
+                'data' => new BankResource($response),
             ], 200);
         } else {
             return response()->json([
@@ -565,5 +563,25 @@ class UserController extends Controller
                 'message' => $response['message'],
             ], $response['status']);
         }
+    }
+
+    public function packageHistory(PackageHistoryRequest $request) {
+        $limit = $request->input('limit', 10);
+        $user = $this->getCurrentUser();
+        $data = UserPackage::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($limit);
+        return response()->json([
+            'status' => 200,
+            'message' => __('Thực hiện thành công.'),
+            'data' => PackageHistoryResource::collection($data),
+        ], 200);
+    }
+
+    public function wallet() {
+        $user = $this->getCurrentUser();
+        return response()->json([
+            'status' => 200,
+            'message' => __('Thực hiện thành công.'),
+            'data' => (float) $user->wallet,
+        ], 200);
     }
 }

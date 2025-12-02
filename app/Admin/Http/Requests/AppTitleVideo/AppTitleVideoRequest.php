@@ -10,9 +10,8 @@ class AppTitleVideoRequest extends BaseRequest
     protected function methodPut(): array
     {
         return [
-            'titles' => ['required', 'array'],
-            'titles.*.id' => ['required'],
-            'titles.*.value' => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/x-m4v', 'max:512000'],
+            'id' => ['required'],
+            'value' => ['nullable', 'string'],
         ];
     }
 }

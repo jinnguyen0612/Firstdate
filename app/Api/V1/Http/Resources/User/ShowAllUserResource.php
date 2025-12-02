@@ -28,6 +28,8 @@ class ShowAllUserResource extends JsonResource
             'zodiac_sign' => $this->zodiac_sign->name ?? null,
             'gender' => $this->gender,
             'is_premium' => $this->is_premium(),
+            'border_color' => $this->border_color,
+            'is_subsidy_offer' => $this->is_subsidy_offer,
         ];
     }
 }

@@ -35,7 +35,7 @@ class DraftUpdateRequest extends BaseRequest
             'answer' => ['required', 'array', 'min:5'],
             'dating_time' => ['required', 'array'],
             'relationship' => ['required', 'array'],
-            'is_subsidy_offer' => ['required', 'boolean'],
+            'is_subsidy_offer' => ['required'],
         ];
     }
 

@@ -1,0 +1,12 @@
+    {
+        "status": 200,
+        "message": "Thực hiện thành công.",
+        "data": [
+            {
+                "id": 1,
+                "key": "home",
+                "name": "Tiêu đề trang chủ",
+                "value": "<p>Đ&acirc;y l&agrave; nơi để hẹn h&ograve;</p>"
+            }
+        ]
+    }

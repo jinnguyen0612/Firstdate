@@ -9,13 +9,17 @@ use App\Admin\Services\File\FileService;
 use App\Admin\Services\Transaction\TransactionServiceInterface;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
+use App\Api\V1\Http\Requests\Transaction\TransactionRequest;
 use App\Api\V1\Http\Requests\User\TopUpWalletRequest;
 use App\Api\V1\Http\Requests\User\WithdrawRequest;
+use App\Api\V1\Http\Resources\Transaction\AllTransactionResource;
+use App\Api\V1\Http\Resources\Transaction\ShowTransactionResource;
 use App\Api\V1\Repositories\Otp\OtpRepositoryInterface;
 use App\Api\V1\Services\Auth\AuthServiceInterface;
 use App\Api\V1\Services\PayOS\PayOSService;
 use App\Api\V1\Support\Response;
 use App\Traits\JwtService;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Transaction
@@ -43,6 +47,46 @@ class TransactionController extends Controller
         $this->repository = $repository;
     }
 
+    public function index(TransactionRequest $request)
+    {
+        try {
+            //code...
+            $data = $request->validated();
+            $userId = $this->getCurrentUserId();
+            $response = $this->repository->paginateTransactionByUser($userId, ...$data);
+            return response()->json([
+                'status' => 200,
+                'data' => AllTransactionResource::collection($response),
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => 400,
+                'message' => __('Thực hiện thất bại.'),
+            ], 400);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            //code...
+            $response = $this->repository->findOrFail($id);
+            return response()->json([
+                'status' => 200,
+                'data' => new ShowTransactionResource($response),
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => 400,
+                'message' => __('Thực hiện thất bại.'),
+            ], 400);
+        }
+    }
+
     /**
      * Nạp tim vào ví
      *
@@ -50,7 +94,7 @@ class TransactionController extends Controller
      *
      * @bodyParam price_id string
      * Mã giá trao đổi. Example: 123456
-     * 
+     *
      * @bodyParam bill_image file
      * Hình ảnh hóa đơn chuyển khoản. Example: file.jpg
      *
@@ -87,15 +131,16 @@ class TransactionController extends Controller
     {
         $response = $this->authService->withdraw($request);
 
-        if ($response == 200) {
+        if ($response['success'] == true) {
             return response()->json([
                 'status' => 200,
                 'message' => __('Gửi yêu cầu rút tiền thành công. Vui lòng chờ quản trị viên xác nhận.'),
+                'data' => new ShowTransactionResource($response['data']),
             ], 200);
         } else {
             return response()->json([
                 'status' => 400,
-                'message' => __('notifyFail'),
+                'message' => $response['message'],
             ], 400);
         }
     }

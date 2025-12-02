@@ -138,7 +138,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         });
     });
 
-    //App Title
+    //Reject Reason
     Route::prefix('/reject-reason')->as('reject_reason.')->group(function () {
         Route::controller(App\Admin\Http\Controllers\RejectReason\RejectReasonController::class)->group(function () {
             Route::group(['middleware' => ['permission:viewAppTitle', 'auth:admin']], function () {
@@ -169,6 +169,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         Route::controller(App\Admin\Http\Controllers\AppTitleVideo\AppTitleVideoController::class)->group(function () {
             Route::group(['middleware' => ['permission:viewAppTitle', 'auth:admin']], function () {
                 Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
             });
 
             Route::group(['middleware' => ['permission:updateAppTitle', 'auth:admin']], function () {

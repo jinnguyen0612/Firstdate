@@ -16,6 +16,7 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Api\V1\Services\Matching\MatchingServiceInterface' => 'App\Api\V1\Services\Matching\MatchingService',
         'App\Api\V1\Services\Deal\DealServiceInterface' => 'App\Api\V1\Services\Deal\DealService',
         'App\Api\V1\Services\Booking\BookingServiceInterface' => 'App\Api\V1\Services\Booking\BookingService',
+        'App\Api\V1\Services\Rating\RatingServiceInterface' => 'App\Api\V1\Services\Rating\RatingService',
     ];
     /**
      * Register services.

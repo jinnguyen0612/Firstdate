@@ -35,6 +35,8 @@ class UserResource extends JsonResource
             'datingTime' => $this->userDatingTimes,
             'status' => $this->status,
             'is_premium' => $this->is_premium(),
+            'border_color' => $this->border_color,
+            'is_subsidy_offer' => $this->is_subsidy_offer,
         ];
     }
 }

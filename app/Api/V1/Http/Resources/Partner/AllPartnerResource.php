@@ -22,7 +22,7 @@ class AllPartnerResource extends JsonResource
             'gallery' => $this->gallery ? collect($this->gallery)->map(fn($img) => asset($img))->all() : null,
             'address' => $this->address,
             'district' => $this->district ? $this->district->name : null,
-            'category' => $this->partner_category ? $this->partner_category->name : null
+            'category' => $this->partner_category ? $this->partner_category->name : null,
         ];
     }
 }

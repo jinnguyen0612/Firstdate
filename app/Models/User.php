@@ -51,6 +51,7 @@ class User extends Authenticatable implements JWTSubject
         'bank_acc_name',
         'bank_name',
         'bank_acc_number',
+        'bank_qr',
         'wallet',
         'email',
         'phone',
@@ -61,6 +62,7 @@ class User extends Authenticatable implements JWTSubject
         'created_at',
         'updated_at',
         'status',
+        'border_color',
     ];
 
     /**

@@ -148,32 +148,101 @@ class AuthService implements AuthServiceInterface
 
     public function update(Request $request)
     {
-        $this->data = $request->validated();
-        $userId = $this->getCurrentUserId();
+        DB::beginTransaction();
+        try {
+            //code...
+            $this->data = $request->validated();
+            $userId = $this->getCurrentUserId();
 
-        if (isset($this->data['avatar']) && $this->data['avatar']) {
-            $avatar = $this->fileService->uploadAvatar('/user', $this->data['avatar']);
-            $this->data['avatar'] = $avatar;
-        }
-        if (isset($this->data['thumbnails']) && $this->data['thumbnails']) {
-            $thumbnails = $this->fileService->uploadMultipleImages('/user', $this->data['thumbnails']);
-            $this->data['thumbnails'] = array_values($thumbnails);
-        } else {
-            $this->data['thumbnails'] = [];
-        }
-        if (isset($this->data['birthday']) && $this->data['birthday']) {
-            $this->data['zodiac_sign'] = ZodiacSign::getZodiacSign($this->data['birthday']);
-        }
-        if (isset($this->data['lat']) && isset($this->data['lng']) && $this->data['lat'] && $this->data['lng']) {
-            $districtName = $this->getDistrictFromLatLng((float)$this->data['lat'], (float)$this->data['lng']);
-            if ($districtName) {
-                $this->data['district_id'] = $this->districtRepository->getQueryBuilder()
-                    ->where('name', 'LIKE', "%{$districtName}%")
-                    ->value('id');
+            if (isset($this->data['avatar']) && $this->data['avatar']) {
+                $avatar = $this->fileService->uploadAvatar('/user', $this->data['avatar']);
+                $this->data['avatar'] = $avatar;
             }
-        }
+            if (isset($this->data['thumbnails'])) {
+                if ($this->data['thumbnails']) {
+                    $thumbnails = $this->fileService->uploadMultipleImages('/user', $this->data['thumbnails']);
+                    $this->data['thumbnails'] = array_values($thumbnails);
+                } else {
+                    $this->data['thumbnails'] = [];
+                }
+            }
+            if (isset($this->data['lat']) && isset($this->data['lng']) && $this->data['lat'] && $this->data['lng']) {
+                $districtName = $this->getDistrictFromLatLng((float)$this->data['lat'], (float)$this->data['lng']);
+                if ($districtName) {
+                    $this->data['district_id'] = $this->districtRepository->getQueryBuilder()
+                        ->where('name', 'LIKE', "%{$districtName}%")
+                        ->value('id');
+                }
+            }
 
-        return $this->repository->update($userId, $this->data);
+            $user = $this->repository->find($userId);
+            if (isset($this->data['dating_time'])) {
+                $datingTimes = (array) $this->data['dating_time'];
+                unset($this->data['dating_time']);
+
+                $user->userDatingTimes()
+                    ->whereNotIn('dating_time', $datingTimes)
+                    ->delete();
+
+                foreach ($datingTimes as $value) {
+                    $user->userDatingTimes()->updateOrCreate(
+                        ['dating_time' => $value],
+                        []
+                    );
+                }
+            }
+
+            if (isset($this->data['relationship'])) {
+                $relationship = (array) $this->data['relationship'];
+                unset($this->data['relationship']);
+
+                $user->userRelationship()
+                    ->whereNotIn('relationship', $relationship)
+                    ->delete();
+
+                foreach ($relationship as $value) {
+                    $user->userRelationship()->updateOrCreate(
+                        ['relationship' => $value],
+                        []
+                    );
+                }
+            }
+
+            if (isset($this->data['answer'])) {
+                $answerIds = (array) ($this->data['answer'] ?? []);
+                unset($this->data['answer']);
+
+                // Mảng rỗng thì kệ, không delete gì hết
+                if (!empty($answerIds) && count($answerIds) >= 5) {
+                    foreach ($answerIds as $answerId) {
+                        $answerModel = $this->answerRepository->findOrFail($answerId);
+                        $questionId  = $answerModel->question_id;
+
+                        $user->userAnswers()
+                            ->where('question_id', $questionId)
+                            ->where('answer_id', '!=', $answerId)
+                            ->delete();
+
+                        $user->userAnswers()->updateOrCreate(
+                            [
+                                'question_id' => $questionId,
+                            ],
+                            [
+                                'answer_id' => $answerId,
+                            ]
+                        );
+                    }
+                }
+            }
+
+            $user = $this->repository->update($user->id, $this->data);
+            DB::commit();
+            return $user;
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error($th->getMessage());
+            return false;
+        }
     }
 
     public function delete($id)
@@ -314,12 +383,20 @@ class AuthService implements AuthServiceInterface
             $this->data = $request->validated();
             $user = $this->getCurrentUser();
 
+            if ($user->wallet < $this->data['amount']) {
+                return [
+                    'success' => false,
+                    'status' => 400,
+                    'message' => 'Số dư không đủ',
+                ];
+            }
+
             $message = [
                 'value' => $this->data['amount'],
                 'service' => null,
             ];
 
-            $this->transactionRepository->createTransaction(
+            $transaction = $this->transactionRepository->createTransaction(
                 $user,
                 null,
                 $this->data['amount'],
@@ -332,12 +409,21 @@ class AuthService implements AuthServiceInterface
             $user->decrement('wallet', $this->data['amount']);
 
             DB::commit();
-            return 200;
+            return [
+                'success' => true,
+                'status' => 200,
+                'message' => 'Gửi yêu cầu thành công',
+                'data' => $transaction,
+            ];
         } catch (\Throwable $th) {
             //throw $th;
             Log::error($th->getMessage());
             DB::rollback();
-            return 400;
+            return [
+                'success' => false,
+                'status' => 400,
+                'message' => 'Thực hiện thất bại. Hãy kiểm tra lại.',
+            ];
         }
     }
 
@@ -383,7 +469,7 @@ class AuthService implements AuthServiceInterface
             $currentUserId = $this->getCurrentUserId();
             $package = $this->packageRepository->findOrFail($this->data['package_id']);
             $user = $this->repository->findOrFail($currentUserId);
-            if($user->wallet < $package->price){
+            if ($user->wallet < $package->price) {
                 return [
                     'success' => false,
                     'status' => 400,
@@ -413,7 +499,7 @@ class AuthService implements AuthServiceInterface
                 TransactionMessage::message(TransactionType::Payment->value, $message)
             );
 
-            $user->increment('wallet', $price);
+            $user->decrement('wallet', $price);
 
             DB::commit();
             return [
@@ -431,7 +517,5 @@ class AuthService implements AuthServiceInterface
                 'message' => __('Đăng ký gói thất bại.'),
             ];
         }
-
-
     }
 }

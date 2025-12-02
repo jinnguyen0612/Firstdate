@@ -23,27 +23,37 @@ class AppTitleVideoService implements AppTitleVideoServiceInterface
 
     protected $repository;
 
-    public function __construct(AppTitleVideoRepositoryInterface $repository,
-                                protected FileService $fileService) {
+    public function __construct(
+        AppTitleVideoRepositoryInterface $repository,
+        protected FileService $fileService
+    ) {
         $this->repository = $repository;
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         DB::beginTransaction();
         try {
-            $data = $request->validated();
-            foreach ($data['titles'] as $title) {
-                $file = $title['value'];
-                $title['value'] = $this->fileService->uploadAvatar('app_title_video', $file);
-                $this->repository->update($title['id'],$title);
+            $data   = $request->validated();
+            $base64 = $data['value'] ?? null;
+
+            if ($base64) {
+                // ví dụ lưu trong folder 'app_title_videos'
+                $path = $this->fileService->uploadBase64('app_title_videos', $base64);
+                $data['value'] = $path;
+            } else {
+                // không gửi value mới thì giữ video cũ
+                unset($data['value']);
             }
+
+            $this->repository->update($data['id'], $data);
+
             DB::commit();
             return true;
-        } catch (Exception $e) {
-            DB::rollback();
+        } catch (\Throwable $e) {
+            DB::rollBack();
             $this->logError('Failed to update', $e);
             return false;
         }
     }
-
 }

@@ -65,9 +65,6 @@ Route::controller(App\Api\V1\Http\Controllers\Setting\SettingController::class)-
         Route::get('/', 'contact')->name('contact'); // Route xuất ra chính sách bảo mật
     });
 
-
-
-
 //***** -- Area -- ******* //
 Route::prefix('/areas')
     ->as('area.')
@@ -131,6 +128,8 @@ Route::controller(App\Api\V1\Http\Controllers\User\UserController::class)
             Route::post('/verify-pin', 'verifyPin')->name('verifyPin');
             Route::get('/near-by', 'getUserNearBy')->name('getUserNearBy');
             Route::post('/register-package', 'registerPackage')->name('registerPackage');
+            Route::get('/wallet', 'wallet')->name('wallet');
+            Route::get('/package-history', 'packageHistory')->name('packageHistory');
         });
         Route::post('/send-otp', 'sendOTP')->name('sendOTP');
         Route::post('/send-otp-register', 'sendOTPRegister')->name('sendOTPRegister');
@@ -145,6 +144,8 @@ Route::controller(App\Api\V1\Http\Controllers\Transaction\TransactionController:
     ->as('transaction.')
     ->middleware('auth:user')
     ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
         Route::post('/top-up-wallet', 'topUpWallet')->name('topUpWallet');
         Route::get('/cancel', 'cancel')->name('cancel');
         Route::post('/withdraw', 'withdraw')->name('withdraw');
@@ -200,11 +201,24 @@ Route::controller(App\Api\V1\Http\Controllers\Booking\BookingController::class)
         Route::get('/pay-deposit/{id}', 'payDeposit')->name('payDeposit');
     });
 
-Route::controller(App\Api\V1\Http\Controllers\Partner\PartnerController::class)
+Route::controller(App\Api\V1\Http\Controllers\Rating\RatingController::class)
+    ->prefix('/ratings')
+    ->as('rating.')
+    ->group(function () {
+        Route::group(['middleware' => 'auth:user'],function () {
+            Route::post('/create', 'create')->name('create');
+            Route::post('/update', 'update')->name('update');
+        });
+        Route::get('/', 'index')->name('get');
+        Route::get('/show/{id}', 'show')->name('show');
+    });
+
+    Route::controller(App\Api\V1\Http\Controllers\Partner\PartnerController::class)
     ->prefix('/partners')
     ->as('partner.')
     ->group(function () {
         Route::get('/', 'index')->name('get');
+        Route::get('/show/{id}', 'show')->name('show');
     });
 
 Route::controller(App\Api\V1\Http\Controllers\SupportCategory\SupportCategoryController::class)

@@ -41,36 +41,36 @@ class DealRepository extends EloquentRepository implements DealRepositoryInterfa
                     ->orWhere('user_female_id', $userId);
             });
 
-        if ($status) {
+        if ($status !== null) {
             $query->where(function ($q) use ($status) {
+
                 if ($status === DealStatus::Pending->value) {
                     $q->where('status', DealStatus::Pending->value)
                         ->orWhereHas('booking', function ($b) {
                             $b->where('status', BookingStatus::Confirmed->value);
                         });
-                }
-
-                elseif ($status === BookingStatus::Processing->value) {
+                } elseif ($status === BookingStatus::Processing->value) {
                     $q->whereHas('booking', function ($b) use ($status) {
                         $b->where('status', $status);
                     });
-                }
-
-                elseif ($status === BookingStatus::Cancelled->value) {
+                } elseif ($status === BookingStatus::Confirmed->value) {
+                    $q->whereHas('booking', function ($b) use ($status) {
+                        $b->where('status', $status);
+                    });
+                } elseif ($status === BookingStatus::Cancelled->value) {
                     $q->where('status', DealStatus::Cancelled->value)
-                        ->orWhereHas('booking', function ($b) {
-                            $b->where('status', BookingStatus::Cancelled->value);
+                        ->orWhereHas('booking', function ($b) use ($status) {
+                            $b->where('status', $status);
                         });
-                }
-
-                elseif ($status === BookingStatus::Completed->value) {
-                    $q->where('status', BookingStatus::Completed->value)
-                        ->orWhereHas('booking', function ($b) {
-                            $b->where('status', BookingStatus::Completed->value);
+                } elseif ($status === BookingStatus::Completed->value) {
+                    $q->where('status', DealStatus::Confirmed->value)
+                        ->orWhereHas('booking', function ($b) use ($status) {
+                            $b->where('status', $status);
                         });
                 }
             });
         }
+
 
         return $query->orderBy('created_at', 'desc')->simplePaginate($limit);
     }

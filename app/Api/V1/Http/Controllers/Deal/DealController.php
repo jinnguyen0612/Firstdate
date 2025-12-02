@@ -8,6 +8,7 @@ use App\Api\V1\Http\Requests\Deal\ChooseDistrictOptionsRequest;
 use App\Api\V1\Http\Requests\Deal\ChoosePartnerOptionsRequest;
 use App\Api\V1\Http\Requests\Deal\DealCancelRequest;
 use App\Api\V1\Http\Requests\Deal\DealRequest;
+use App\Api\V1\Http\Resources\Deal\AllDealResource;
 use App\Api\V1\Http\Resources\Deal\DealResource;
 use App\Api\V1\Repositories\Deal\DealRepositoryInterface;
 use App\Api\V1\Services\Deal\DealServiceInterface;
@@ -52,7 +53,7 @@ class DealController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => __('Thực hiện thành công.'),
-                'data' => DealResource::collection($deal)
+                'data' => AllDealResource::collection($deal)
             ]);
         } catch (\Exception $e) {
             Log::error('Error listing Question: ' . $e->getMessage());

@@ -86,6 +86,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'QL Bàn', 'description' => '<p>QL Bàn</p>', 'key' => 'PartnerTable'],
             ['name' => 'QL Danh mục Câu hỏi hỗ trợ', 'description' => '<p>QL Danh mục Câu hỏi hỗ trợ</p>', 'key' => 'SupportCategory'],
             ['name' => 'QL Câu hỏi hỗ trợ', 'description' => '<p>QL Câu hỏi hỗ trợ</p>', 'key' => 'Support'],
+            ['name' => 'QL Gói', 'description' => '<p>QL Gói</p>', 'key' => 'Package'],
         ];
 
         // Vietnamese translations for module names
@@ -110,6 +111,7 @@ class PermissionSeeder extends Seeder
             'PartnerTable' => 'Bàn',
             'SupportCategory' => 'Danh mục Câu hỏi hỗ trợ',
             'Support' => 'Câu hỏi hỗ trợ',
+            'Package' => 'Gói',
         ];
 
         // Insert modules and build module map

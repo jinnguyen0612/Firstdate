@@ -32,6 +32,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Api\V1\Repositories\Partner\PartnerRepositoryInterface' => 'App\Api\V1\Repositories\Partner\PartnerRepository',
         'App\Api\V1\Repositories\PriceList\PriceListRepositoryInterface' => 'App\Api\V1\Repositories\PriceList\PriceListRepository',
         'App\Api\V1\Repositories\Package\PackageRepositoryInterface' => 'App\Api\V1\Repositories\Package\PackageRepository',
+        'App\Api\V1\Repositories\Rating\RatingRepositoryInterface' => 'App\Api\V1\Repositories\Rating\RatingRepository',
     ];
     /**
      * Register services.

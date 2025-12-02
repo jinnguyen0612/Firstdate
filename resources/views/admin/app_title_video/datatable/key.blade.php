@@ -1,0 +1,1 @@
+<x-link :href="route('admin.app_title_video.edit', $id)" :title="$key" /><br>

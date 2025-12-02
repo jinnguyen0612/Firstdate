@@ -35,7 +35,9 @@ class ShowAllUserMatchingResource extends JsonResource
             'gender' => $this->gender,
             'is_supper_love' => $this->is_supper_love===1?true:false,
             'support_money' => $this->support_money?(int) $this->support_money : null,
-            'is_premium' => $this->is_premium()
+            'is_premium' => $this->is_premium(),
+            'border_color' => $this->border_color,
+            'is_subsidy_offer' => $this->is_subsidy_offer,
         ];
     }
 }

@@ -14,6 +14,7 @@ class PartnerRequest extends BaseRequest
             'phone' => ['required', 'string', 'unique:App\Models\User,phone'],
             'password' => ['required', 'string', 'confirmed'],
             'name' => ['required', 'string'],
+            'opening_time' => ['required'],
             'description' => ['nullable'],
             'address' => ['required'],
             'province' => ['required'],
@@ -34,6 +35,7 @@ class PartnerRequest extends BaseRequest
             'id' => ['required', 'exists:App\Models\Partner,id'],
             'partner_category_id' => ['required', 'exists:App\Models\PartnerCategory,id'],
             'name' => ['required', 'string'],
+            'opening_time' => ['nullable'],
             'description' => ['nullable'],
             'address' => ['nullable'],
             'province' => ['nullable'],
@@ -48,7 +50,7 @@ class PartnerRequest extends BaseRequest
         ];
     }
 
-    
+
     protected function withValidator($validator)
     {
         $validator->after(function ($validator) {

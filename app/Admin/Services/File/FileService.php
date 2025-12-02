@@ -73,7 +73,6 @@ class FileService
             return $this;
         }
         return $this->uploadFileBase64($file);
-
     }
 
     private function uploadFileBase64($file)
@@ -110,7 +109,6 @@ class FileService
         $files = array_map(function ($value) {
             $value = Str::after(Str::after($value, url('/')), 'public/uploads/');
             return $value;
-
         }, $files);
 
         $files = array_filter($files, function ($value) {
@@ -199,5 +197,67 @@ class FileService
         return $uploadedPaths;
     }
 
+    /**
+     * Upload file từ base64, cho phép truyền folder và dữ liệu file.
+     *
+     * @param string $folder Thư mục lưu file (vd: 'app_title_videos')
+     * @param string|array $fileBase64
+     *      - Nếu là string: có thể là 'data:video/mp4;base64,...' hoặc chỉ base64
+     *      - Nếu là array: ['data' => base64_string, 'name' => 'filename.mp4']
+     * @return string Đường dẫn file sau khi upload (kèm folderPrefix)
+     */
+    public function uploadBase64(string $folder, $fileBase64): string
+    {
+        // Set thư mục lưu file
+        $this->setFolder($folder);
 
+        // Chuẩn hoá $file về đúng format array: ['data' => ..., 'name' => ...]
+        if (is_string($fileBase64)) {
+            $fileArray = $this->normalizeBase64StringToFileArray($fileBase64);
+        } elseif (is_array($fileBase64)) {
+            // Giả định đã đúng dạng ['data' => ..., 'name' => ...]
+            $fileArray = $fileBase64;
+        } else {
+            throw new \InvalidArgumentException('Invalid base64 file input.');
+        }
+
+        // Dùng lại logic có sẵn
+        $this->uploadFileBase64($fileArray);
+
+        return $this->getInstance();
+    }
+
+    /**
+     * Chuẩn hoá chuỗi base64 (data URL hoặc raw) thành array ['data' => ..., 'name' => ...]
+     *
+     * @param string $base64
+     * @return array
+     */
+    protected function normalizeBase64StringToFileArray(string $base64): array
+    {
+        $name = uniqid_real(); // helper bạn đang dùng
+
+        // Nếu base64 có prefix kiểu data:video/mp4;base64,...
+        if (str_starts_with($base64, 'data:')) {
+            [$header, $data] = explode(',', $base64, 2);
+
+            // Lấy mime type từ header: data:video/mp4;base64
+            $mimePart = explode(';', $header)[0];      // data:video/mp4
+            $mimeType = explode(':', $mimePart)[1] ?? 'application/octet-stream'; // video/mp4
+
+            $extension = explode('/', $mimeType)[1] ?? 'bin';
+            $filename = $name . '.' . $extension;
+
+            return [
+                'data' => $data,
+                'name' => $filename,
+            ];
+        }
+
+        // Nếu chỉ là raw base64, không header → để đuôi .bin hoặc tuỳ bạn muốn
+        return [
+            'data' => $base64,
+            'name' => $name . '.bin',
+        ];
+    }
 }

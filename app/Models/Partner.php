@@ -62,8 +62,18 @@ class Partner extends Authenticatable
         return $this->belongsTo(District::class);
     }
 
-    public function partner_table():HasMany
+    public function partner_table(): HasMany
     {
         return $this->hasMany(PartnerTable::class);
+    }
+
+    public function rating(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function averageRating(): float
+    {
+        return (float) ($this->ratings()->avg('rating') ?? 0);
     }
 }
