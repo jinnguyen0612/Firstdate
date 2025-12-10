@@ -41,30 +41,31 @@ class BookingController extends Controller
      * Mã kèo của người dùng
      *
      * @responseFile App/Api/V1/Http/Resources/Booking/PayDeposit.json
-     * 
+     *
      */
     public function payDeposit($id)
     {
         $response = $this->service->payDeposit($id);
-        if ($response == 404) {
+        if ($response['status'] == 404) {
             return response()->json([
                 'status' => 404,
                 'message' => __('Không tìm thấy yêu cầu cọc tiền.')
             ], 404);
         }
-        if ($response == 409) {
+        if ($response['status'] == 409) {
             return response()->json([
                 'status' => 409,
                 'message' => __('Người dùng này đã cọc tiền.')
             ], 409);
         }
-        if ($response == 200) {
+        if ($response['status'] == 200) {
             return response()->json([
                 'status' => 200,
-                'message' => __('Cọc tiền thành công.')
+                'message' => __('Cọc tiền thành công.'),
+                'data' => $response['data'],
             ], 200);
         }
-        if ($response == 400) {
+        if ($response['status'] == 400) {
             return response()->json([
                 'status' => 400,
                 'message' => __('Cọc tiền thất bại. Hãy kiểm tra lại.')

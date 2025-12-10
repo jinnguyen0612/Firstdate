@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 interface NotificationServiceInterface
 {
+    public function updateDeviceToken($request);
     /**
      * Tạo mới
      *

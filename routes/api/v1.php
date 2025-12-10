@@ -13,6 +13,7 @@ Route::controller(App\Api\V1\Http\Controllers\Notification\NotificationControlle
         Route::get('/read-all', 'updateAllStatusRead')->name('updateAllStatusRead');
         Route::delete('/delete/{id}', 'delete')->name('delete');
         Route::delete('/delete-all', 'deleteAll')->name('deleteAll');
+        Route::post('/update-device-token', 'updateDeviceToken')->name('updateDeviceToken');
     });
 
 //Price List
@@ -147,16 +148,9 @@ Route::controller(App\Api\V1\Http\Controllers\Transaction\TransactionController:
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/top-up-wallet', 'topUpWallet')->name('topUpWallet');
+        Route::get('/success', 'success')->name('success');
         Route::get('/cancel', 'cancel')->name('cancel');
         Route::post('/withdraw', 'withdraw')->name('withdraw');
-    });
-
-Route::controller(App\Api\V1\Http\Controllers\PayOS\PayOSController::class)
-    ->prefix('/payos')
-    ->as('payos.')
-    ->middleware('auth:user')
-    ->group(function () {
-        Route::post('/webhook', 'webhook')->name('webhook');
     });
 
 //***** -- matching -- ******* //
@@ -205,7 +199,7 @@ Route::controller(App\Api\V1\Http\Controllers\Rating\RatingController::class)
     ->prefix('/ratings')
     ->as('rating.')
     ->group(function () {
-        Route::group(['middleware' => 'auth:user'],function () {
+        Route::group(['middleware' => 'auth:user'], function () {
             Route::post('/create', 'create')->name('create');
             Route::post('/update', 'update')->name('update');
         });
@@ -213,7 +207,7 @@ Route::controller(App\Api\V1\Http\Controllers\Rating\RatingController::class)
         Route::get('/show/{id}', 'show')->name('show');
     });
 
-    Route::controller(App\Api\V1\Http\Controllers\Partner\PartnerController::class)
+Route::controller(App\Api\V1\Http\Controllers\Partner\PartnerController::class)
     ->prefix('/partners')
     ->as('partner.')
     ->group(function () {
@@ -234,6 +228,16 @@ Route::controller(App\Api\V1\Http\Controllers\Support\SupportController::class)
     ->group(function () {
         Route::get('/', 'index')->name('get');
         Route::get('/show/{id}', 'show')->name('show');
+    });
+
+Route::controller(App\Api\V1\Http\Controllers\PayOS\PayOSController::class)
+    ->prefix('/payos')
+    ->as('payos.')
+    ->group(function () {
+        Route::post('/webhook', 'webhook')->name('webhook');
+        Route::group(['middleware' => 'auth:user'], function () {
+            Route::get('/payment/{orderCode}', 'getPayment')->name('getPayment'); // mobile gọi
+        });
     });
 
 Route::fallback(function () {

@@ -63,6 +63,8 @@ class User extends Authenticatable implements JWTSubject
         'updated_at',
         'status',
         'border_color',
+        'device_token',
+        'is_subsidy_offer',
     ];
 
     /**

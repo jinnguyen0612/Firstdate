@@ -57,20 +57,20 @@
             handleTokenRefresh(registration);
         }
 
-        // function requestNotificationPermission(registration) {
-        //     Notification.requestPermission().then(permission => {
-        //         if (permission === "granted") {
-        //             console.log("Notification permission granted.");
-        //             retrieveAndUpdateToken(registration);
-        //         } else {
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Lỗi',
-        //                 text: 'Vui lòng bật thông báo để nhận thông tin!',
-        //             });
-        //         }
-        //     });
-        // }
+        function requestNotificationPermission(registration) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    console.log("Notification permission granted.");
+                    retrieveAndUpdateToken(registration);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Vui lòng bật thông báo để nhận thông tin!',
+                    });
+                }
+            });
+        }
 
         function retrieveAndUpdateToken(registration) {
             messaging.getToken({

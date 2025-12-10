@@ -64,7 +64,7 @@ class DealRepository extends EloquentRepository implements DealRepositoryInterfa
                         });
                 } elseif ($status === BookingStatus::Completed->value) {
                     $q->where('status', DealStatus::Confirmed->value)
-                        ->orWhereHas('booking', function ($b) use ($status) {
+                        ->whereHas('booking', function ($b) use ($status) {
                             $b->where('status', $status);
                         });
                 }

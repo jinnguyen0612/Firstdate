@@ -3,6 +3,7 @@
 namespace App\Api\V1\Services\Notification;
 
 use App\Api\V1\Services\Notification\NotificationServiceInterface;
+use App\Admin\Services\Notification\NotificationServiceInterface as AdminNotificationServiceInterface;
 use App\Models\Notification;
 use App\Enums\Notification\{NotificationType, NotificationStatus, NotificationContactType};
 use App\Traits\SendMail;
@@ -14,7 +15,7 @@ use Illuminate\Mail\Mailable;
 use App\Mail\SoundNotification;
 use App\Mail\SpeedNotification;
 
-class NotificationService implements NotificationServiceInterface
+class NotificationService extends AdminNotificationServiceInterface implements NotificationServiceInterface
 {
     use SendMail, SendNotification;
 

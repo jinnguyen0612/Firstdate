@@ -443,20 +443,20 @@ class UserController extends Controller
             $user->decrement('reroll');
         }
 
-        $data = $this->repository->getUserNearBy($user->id, ...$paginate);
+        $paginator = $this->repository->getUserNearBy($user->id, ...$paginate);
 
-        if ($isReroll && $data->isEmpty()) {
-            $user->increment('reroll');
-            return response()->json([
-                'status' => 404,
-                'message' => __('Chúng tôi đang tìm thêm đối tượng mới cho bạn. Vui lòng thử lại sau.')
-            ], 400);
-        }
+        $data = ShowAllUserResource::collection($paginator->items());
 
         return response()->json([
-            'status' => 200,
+            'status'  => 200,
             'message' => __('Thực hiện thành công.'),
-            'data' => ShowAllUserResource::collection($data),
+            'data'    => $data,
+            'meta'    => [
+                'page'      => $paginator->currentPage(),
+                'limit'     => $paginator->perPage(),
+                'total'     => $paginator->total(),       // tổng user candidate
+                'roll_page' => $paginator->currentPage(), // page để client dùng cho roll tiếp theo
+            ],
         ]);
     }
 
@@ -550,7 +550,8 @@ class UserController extends Controller
         }
     }
 
-    public function registerPackage(RegisterPackageRequest $request) {
+    public function registerPackage(RegisterPackageRequest $request)
+    {
         $response = $this->service->registerPackage($request);
         if ($response['success'] == true) {
             return response()->json([
@@ -565,7 +566,8 @@ class UserController extends Controller
         }
     }
 
-    public function packageHistory(PackageHistoryRequest $request) {
+    public function packageHistory(PackageHistoryRequest $request)
+    {
         $limit = $request->input('limit', 10);
         $user = $this->getCurrentUser();
         $data = UserPackage::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($limit);
@@ -576,7 +578,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function wallet() {
+    public function wallet()
+    {
         $user = $this->getCurrentUser();
         return response()->json([
             'status' => 200,

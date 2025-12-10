@@ -418,8 +418,8 @@ class DealService implements DealServiceInterface
                     'status' => NotificationStatus::NOT_READ->value,
                 ]);
                 //push notification
-                // $this->sendNotificationRecord($notificationMale, $deal->user_male->device_token);
-                // $this->sendNotificationRecord($notificationFemale, $deal->user_female->device_token);
+                $this->sendNotificationRecord($notificationMale, $deal->user_male->device_token);
+                $this->sendNotificationRecord($notificationFemale, $deal->user_female->device_token);
 
                 Process::create([
                     'type' => $type,
@@ -450,7 +450,7 @@ class DealService implements DealServiceInterface
                     'status' => NotificationStatus::NOT_READ->value,
                 ]);
                 //push notification
-                // $this->sendNotificationRecord($notification, $user->device_token);
+                $this->sendNotificationRecord($notification, $user->device_token);
                 Process::create([
                     'type' => $type,
                     'user_id' => $user->id,

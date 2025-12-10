@@ -9,13 +9,14 @@ use App\Admin\Repositories\User\UserRepositoryInterface;
 use App\Admin\Traits\AuthService;
 use App\Enums\Notification\NotificationObject;
 use App\Enums\Notification\NotificationStatus;
+use App\Traits\SendNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 
 class NotificationService implements NotificationServiceInterface
 {
-    use AuthService;
+    use AuthService, SendNotification;
 
     protected $data;
 
@@ -28,6 +29,28 @@ class NotificationService implements NotificationServiceInterface
 
     ) {
         $this->repository = $repository;
+    }
+
+    public function updateDeviceToken($request)
+    {
+        try {
+            $data = $request->validate([
+                'device_token' => 'required|string'
+            ]);
+            $user = $this->getCurrentUser();
+            if ($user) {
+                if ($user->device_token == null || $user->device_token != $data['device_token']) {
+                    $this->userRepository->update($user->id, [
+                        'device_token' => $data['device_token'],
+                    ]);
+                    return response()->json(['status' => 200, 'message' => 'Update device token success.'], 200);
+                } else {
+                    return response()->json(['status' => 200, 'message' => 'Device token is up to date.'], 200);
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'message' => 'Failed to update token.', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)
@@ -59,7 +82,7 @@ class NotificationService implements NotificationServiceInterface
             DB::commit();
             return true;
         } catch (\Throwable $th) {
-            throw($th);
+            throw ($th);
             DB::rollBack();
             return false;
         }
@@ -74,8 +97,10 @@ class NotificationService implements NotificationServiceInterface
         }
         foreach ($partnerIds as $partnerId) {
             $this->data['partner_id'] = $partnerId;
+            $partner = $this->partnerRepository->find($partnerId);
             unset($this->data['user_id']);
-            $this->repository->create($this->data);
+            $notification = $this->repository->create($this->data);
+            $this->sendNotificationRecord($notification, $partner->device_token);
         }
         unset($this->data['partner_id']);
     }
@@ -88,8 +113,10 @@ class NotificationService implements NotificationServiceInterface
 
         foreach ($userIds as $userId) {
             $this->data['user_id'] = $userId;
+            $user = $this->userRepository->find($userId);
             unset($this->data['partner_id']);
-            $this->repository->create($this->data);
+            $notification = $this->repository->create($this->data);
+            $this->sendNotificationRecord($notification, $user->device_token);
         }
 
         unset($this->data['user_id']);

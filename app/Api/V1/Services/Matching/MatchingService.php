@@ -119,7 +119,7 @@ class MatchingService implements MatchingServiceInterface
                         'status' => NotificationStatus::NOT_READ->value,
                     ]);
                     //push notification
-                    // $this->sendNotificationRecord($notification, $deal->user_female->device_token);
+                    $this->sendNotificationRecord($notification, $deal->user_female->device_token);
                     Process::create([
                         'type' => ProcessType::MakeDeal->value,
                         'user_id' => $deal->user_female_id,

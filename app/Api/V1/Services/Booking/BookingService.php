@@ -60,11 +60,17 @@ class BookingService implements BookingServiceInterface
                         ->orWhere('status', BookingStatus::Confirmed->value);
                 })->first();
 
-            if ($booking == null) return 404;
+            if ($booking == null) return [
+                'status' => 404,
+            ];
 
-            if ($booking->depositForUser($currentUser->id) > 0) return 409;
+            if ($booking->depositForUser($currentUser->id) > 0) return [
+                'status' => 409,
+            ];
 
-            if($currentUser->wallet < $booking->getDepositNumber($currentUser->id)) return 400;
+            if($currentUser->wallet < $booking->getDepositNumber($currentUser->id)) return [
+                'status' => 400,
+            ];
 
             if($booking->user_female_id == $currentUser->id){
                 $userLovedId = $booking->user_male_id;
@@ -102,7 +108,7 @@ class BookingService implements BookingServiceInterface
                 'paid_at' => now(),
             ]);
 
-            $this->transactionRepository->createTransaction(
+            $transaction = $this->transactionRepository->createTransaction(
                 $currentUser,
                 null,
                 $totalDeposit,
@@ -115,11 +121,20 @@ class BookingService implements BookingServiceInterface
             Process::where('deal_id', $dealId)->where('user_id', $currentUser->id)->where('type', ProcessType::PayDeposit->value)->delete();
 
             DB::commit();
-            return 200;
+            return [
+                'status' => 200,
+                'data' => [
+                    'transaction_code' => $transaction->code,
+                    'total_deposit' => $totalDeposit,
+                    'booking_code' => $booking->code,
+                ],
+            ];
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Pay deposit failed: ' . $th->getMessage());
-            return 400;
+            return [
+                'status' => 400,
+            ];
         }
     }
 }

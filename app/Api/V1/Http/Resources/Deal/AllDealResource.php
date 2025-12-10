@@ -18,7 +18,7 @@ class AllDealResource extends JsonResource
             'userFemale' => ShowAllUserResource::make($this->user_female),
             'status' => $this->status,
             'booking_status' => $this->booking? $this->booking->status : null,
-            'deposit' => $this->booking? $this->booking->deposit : null,
+            'deposit' => $this->booking? $this->booking->deposits : null,
         ];
     }
 }

@@ -111,6 +111,12 @@ class TransactionController extends Controller
         }
     }
 
+    public function success()
+    {
+        // Xử lý hủy giao dịch nếu cần thiết
+        return response()->json(['message' => 'Transaction successful']);
+    }
+
     public function cancel()
     {
         // Xử lý hủy giao dịch nếu cần thiết

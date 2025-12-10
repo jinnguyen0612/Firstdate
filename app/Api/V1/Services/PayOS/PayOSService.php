@@ -12,6 +12,7 @@ class PayOSService
     private string $clientId;
     private string $apiKey;
     private string $checksumKey;
+    private string $payosExpireTime;
     /**
      * Base URL PayOS (v2)
      */
@@ -23,6 +24,7 @@ class PayOSService
         $this->clientId = env('PAYOS_CLIENT_ID');
         $this->apiKey = env('PAYOS_API_KEY');
         $this->checksumKey = env('PAYOS_CHECKSUM_KEY');
+        $this->payosExpireTime = (int) env('PAYOS_EXPIRE_TIME');
     }
 
     /**
@@ -39,9 +41,8 @@ class PayOSService
             'description' => $description,
             'returnUrl'   => $returnUrl,
             'cancelUrl'   => $cancelUrl,
-            'expiredAt'   => now()->addMinutes(15)->timestamp,
+            'expiredAt'   => now()->addMinutes($this->payosExpireTime)->timestamp,
         ];
-        Log::info('PayOS createPayment data', $paymentData);
 
         // Kiểm tra dữ liệu đầu vào
         foreach ($paymentData as $key => $value) {
@@ -118,28 +119,65 @@ class PayOSService
         }
     }
 
-
-    /**
-     * Lấy trạng thái thanh toán (query status)
-     */
-    public function getPaymentStatus(string $orderCode): ?string
+    public function getPaymentDetail(string $orderCode): ?array
     {
         $headers = [
-            'x-client-id' => env('PAYOS_CLIENT_ID'),
-            'x-api-key'   => env('PAYOS_API_KEY'),
+            'x-client-id' => $this->clientId,
+            'x-api-key'   => $this->apiKey,
         ];
 
-        $url = $this->baseUrl . '/' . $orderCode;
-        $response = Http::withHeaders($headers)->get($url);
+        // endpoint đúng của PayOS: /v2/payment-requests/{orderCode}
+        $url = $this->baseUrl . '/v2/payment-requests/' . $orderCode;
 
-        if ($response->failed()) {
-            Log::error('PayOS getPaymentStatus failed', [
-                'status' => $response->status(),
-                'body' => $response->body(),
+        try {
+            $response = Http::withHeaders($headers)->get($url);
+
+            if ($response->failed()) {
+                Log::error('PayOS getPaymentDetail failed', [
+                    'status' => $response->status(),
+                    'body'   => $response->body(),
+                ]);
+                return null;
+            }
+
+            $result = $response->json();
+
+            if (!isset($result['code']) || $result['code'] !== '00') {
+                // Log::error('PayOS getPaymentDetail invalid response', ['result' => $result]);
+                return null;
+            }
+
+            $data = $result['data'] ?? [];
+
+            // (Optional) verify signature nếu PayOS trả kèm
+            if (!empty($result['signature'])) {
+                $expectedSignature = PayOSSignatureUtils::createSignatureFromObj(
+                    $this->checksumKey,
+                    $data
+                );
+
+                if (!hash_equals($expectedSignature, $result['signature'])) {
+                    // Log::error('PayOS getPaymentDetail signature mismatch');
+                    return null;
+                }
+            }
+
+            return $data; // chứa id, orderCode, amount, amountPaid, status, ...
+        } catch (\Throwable $e) {
+            Log::error('PayOS getPaymentDetail exception', [
+                'message' => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
             ]);
             return null;
         }
+    }
 
-        return $response->json('data.status');
+    /**
+     * Nếu vẫn muốn hàm đơn giản trả status thì wrap lại:
+     */
+    public function getPaymentStatus(string $orderCode): ?string
+    {
+        $detail = $this->getPaymentDetail($orderCode);
+        return $detail['status'] ?? null;
     }
 }

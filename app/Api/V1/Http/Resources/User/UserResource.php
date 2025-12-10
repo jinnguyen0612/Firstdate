@@ -37,6 +37,7 @@ class UserResource extends JsonResource
             'is_premium' => $this->is_premium(),
             'border_color' => $this->border_color,
             'is_subsidy_offer' => $this->is_subsidy_offer,
+            'reroll' => $this->reroll,
         ];
     }
 }

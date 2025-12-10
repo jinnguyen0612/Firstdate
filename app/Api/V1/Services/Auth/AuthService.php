@@ -320,22 +320,23 @@ class AuthService implements AuthServiceInterface
     {
         DB::beginTransaction();
         try {
-            //code...
             $this->data = $request->validated();
             $user = $this->getCurrentUser();
 
             $price = $this->priceListRepository->findOrFail($this->data['price_id']);
 
-            if (isset($this->data['bill_image']) && $this->data['bill_image']) {
+            // bill_image vẫn cho upload nếu bạn muốn user đính kèm hóa đơn
+            if (!empty($this->data['bill_image'])) {
                 $bill = $this->fileService->uploadAvatar('/topup', $this->data['bill_image']);
                 $this->data['bill_image'] = $bill;
             }
 
             $message = [
-                'value' => $price->value,
+                'value'   => $price->value,
                 'service' => null,
             ];
 
+            // 1. Tạo transaction PENDING
             $transaction = $this->transactionRepository->createTransaction(
                 $user,
                 null,
@@ -346,30 +347,45 @@ class AuthService implements AuthServiceInterface
                 TransactionMessage::message(TransactionType::Deposit->value, $message)
             );
 
-            $payosData = $this->payOSService->createPayment($transaction->id, $transaction->amount, $transaction->description);
+            // 2. Gọi PayOS tạo payment request
+            // Ở đây mình dùng transaction->id làm orderCode để đồng bộ với webhook
+            $payosData = $this->payOSService->createPayment(
+                (string)$transaction->id,
+                (float)$transaction->amount,
+                (string)$transaction->description
+            );
 
-            $transaction->update(['payos_order_code' => $payosData['code'] ?? null]);
+            // $payosData là data gốc PayOS trả về (id, orderCode, checkoutUrl, qrCode, accountNumber, accountName,...)
 
+            // 3. Lưu thông tin PayOS vào transaction
+            $transaction->update([
+                'payos_order_code' => $payosData['orderCode'] ?? null,
+                'payos_payout_id'  => $payosData['id'] ?? null,
+            ]);
 
             DB::commit();
+
             return [
                 'status' => 200,
-                'data' => [
+                'data'   => [
+                    'transaction_id'   => $transaction->id,
                     'transaction_code' => $transaction->code,
-                    'checkoutUrl' => $payosData['checkoutUrl'] ?? null,
-                    'qrCode' => $payosData['qrCode'] ?? null,
-                    'amount' => $price->price,
-                    'description' => $transaction->description,
-                    "accountNumber" => $payosData['accountNumber'],
-                    "accountName" => $payosData['accountName'],
+                    'payos_order_code' => $payosData['orderCode'] ?? null,
+                    'payos_payout_id'  => $payosData['id'] ?? null,
+
+                    'checkoutUrl'      => $payosData['checkoutUrl'] ?? null,
+                    'qrCode'           => $payosData['qrCode'] ?? null,
+                    'amount'           => $price->price,
+                    'description'      => $transaction->description,
+                    'accountNumber'    => $payosData['accountNumber'] ?? null,
+                    'accountName'      => $payosData['accountName'] ?? null,
                 ],
             ];
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::error($th->getMessage());
-            DB::rollback();
+            Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            DB::rollBack();
             return [
-                'status' => 400,
+                'status'  => 400,
                 'message' => __('notifyFail'),
             ];
         }

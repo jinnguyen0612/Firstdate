@@ -3,8 +3,8 @@
 namespace App\Api\V1\Http\Controllers\Notification;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Services\Notification\NotificationServiceInterface;
 use App\Admin\Traits\AuthService;
-use App\Api\V1\Services\Notification\NotificationServiceInterface;
 use App\Api\V1\Http\Requests\Paginate\PaginateRequest;
 use App\Api\V1\Http\Resources\Notification\NotificationResource;
 use App\Api\V1\Http\Resources\Notification\NotificationDetailResource;
@@ -12,6 +12,8 @@ use App\Api\V1\Repositories\Notification\NotificationRepositoryInterface;
 use App\Api\V1\Support\Response;
 use App\Enums\Notification\NotificationStatus;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Thông báo
@@ -158,5 +160,40 @@ class NotificationController extends Controller
             $this->repository->delete($notification->id);
         }
         return $this->jsonResponseSuccess([]);
+    }
+
+    /**
+     * Cập nhật device_token.
+     *
+     * API này dùng để cập nhật device_token cho người dùng
+     *
+     * @authenticated Authorization string required
+     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     *
+     * @bodyParam device_token string required
+     * Device Token. Example: fKyIN9ACdV873pS0aOUrSi:APA91bHED_QSz3XnUSMQst7jtTQPLZEwkEn-CbTLnYWCxuwg-2xx2xEZO1fpltclMG0zVxKdkOMMzlx0taaxGu6HiWfYLVFJkVWeaMQRAnGsL65-O5OTbIIfs1j3ntpNakLQhc4KtVSB
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công."
+     * }
+     *
+     * @response 500 {
+     *      "status": 500,
+     *      "message": "Error updating device token: ..."
+     * }
+     *
+     * @return JsonResponse
+     */
+    public function updateDeviceToken(Request $request)
+    {
+        try {
+            //code...
+            return $this->service->updateDeviceToken($request);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error('Error updating device token: ' . $th->getMessage());
+            return $this->jsonResponseError('Error updating device token: ' . $th->getMessage(), 500);
+        }
     }
 }

@@ -25,6 +25,7 @@ class ShowTransactionResource extends JsonResource
             'status' => $this->status,
             'type' => TransactionType::getDescription($this->type),
             'created_at' => $this->created_at,
+            'payos_payout_id' => $this->payos_payout_id,
         ];
     }
 }
